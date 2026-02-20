@@ -1,0 +1,293 @@
+<section class="lv-welcome" style="background: {{ section.settings.bg_color }};">
+  <div class="lv-welcome__container">
+
+    {% if section.settings.brand_image != blank %}
+      <div class="lv-welcome__brand-image">
+        <img src="{{ section.settings.brand_image | image_url: width: 500 }}" alt="Liu Vinci">
+      </div>
+    {% endif %}
+
+    <div class="lv-welcome__text-wrap">
+      <h2 class="lv-welcome__title">
+        <span class="lv-welcome__title-script" style="font-size: {{ section.settings.script_size }}px; color: {{ section.settings.script_color }};">
+          {{ section.settings.title_script }}
+        </span>
+        <span class="lv-welcome__title-bold" style="font-size: {{ section.settings.main_title_size }}px; color: {{ section.settings.main_title_color }};">
+          {{ section.settings.title_main }}
+        </span>
+      </h2>
+
+      <p class="lv-welcome__body" style="font-size: {{ section.settings.body_size }}px; color: {{ section.settings.body_color }};">
+        {{ section.settings.body_text }}
+      </p>
+
+      {% if section.settings.button_text != blank %}
+        <a href="{{ section.settings.button_link }}" class="lv-welcome__btn" style="background: {{ section.settings.button_bg }}; color: {{ section.settings.button_text_color }}; border-color: {{ section.settings.button_bg }};">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Welcome Liu Vinci",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "brand_image",
+      "label": "Brand Illustration (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "title_script",
+      "label": "Script Title",
+      "default": "Welcome to"
+    },
+    {
+      "type": "text",
+      "id": "title_main",
+      "label": "Main Title",
+      "default": "LIU VINCI"
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Body Text",
+      "default": "We're a small, hand-crafted beauty brand built with intention and care. Every product is made in small batches, vegan, cruelty-free, and free from harsh chemicals — gentle on your skin and kind to nature."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Our Story"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "script_size",
+      "label": "Script title size",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "default": 56,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "main_title_size",
+      "label": "Main title size",
+      "min": 20,
+      "max": 120,
+      "step": 2,
+      "default": 72,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body text size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#0a0000"
+    },
+    {
+      "type": "color",
+      "id": "script_color",
+      "label": "Script title color",
+      "default": "#dea6ad"
+    },
+    {
+      "type": "color",
+      "id": "main_title_color",
+      "label": "Main title color",
+      "default": "#8b0000"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body text color",
+      "default": "#a0a0a0"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button background color",
+      "default": "#8b0000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "default": 80,
+      "unit": "px"
+    }
+  ],
+  "presets": [{ "name": "Welcome Liu Vinci" }]
+}
+{% endschema %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+.lv-welcome {
+  padding: {{ section.settings.padding_top }}px 40px {{ section.settings.padding_bottom }}px;
+  text-align: center;
+  position: relative;
+}
+
+.lv-welcome::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(139,0,0,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.lv-welcome__container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+}
+
+.lv-welcome__brand-image {
+  width: 200px;
+  height: 200px;
+}
+
+.lv-welcome__brand-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.lv-welcome__text-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.lv-welcome__title {
+  margin: 0;
+  line-height: 1.1;
+}
+
+.lv-welcome__title-script {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.3;
+}
+
+.lv-welcome__title-bold {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  letter-spacing: 8px;
+  line-height: 1.1;
+}
+
+.lv-welcome__body {
+  max-width: 620px;
+  line-height: 1.9;
+  margin: 0;
+  font-family: inherit;
+}
+
+.lv-welcome__btn {
+  display: inline-block;
+  padding: 14px 44px;
+  border-radius: 30px;
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid;
+  transition: all 0.3s;
+  margin-top: 8px;
+}
+
+.lv-welcome__btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+/* Decorative line under title */
+.lv-welcome__title-bold::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: rgba(139,0,0,0.5);
+  margin: 16px auto 0;
+}
+
+@media (max-width: 768px) {
+  .lv-welcome {
+    padding: 60px 24px !important;
+  }
+  .lv-welcome__title-script {
+    font-size: calc({{ section.settings.script_size }}px * 0.65) !important;
+  }
+  .lv-welcome__title-bold {
+    font-size: calc({{ section.settings.main_title_size }}px * 0.65) !important;
+    letter-spacing: 4px;
+  }
+}
+</style>

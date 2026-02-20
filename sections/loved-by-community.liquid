@@ -1,0 +1,277 @@
+<section class="lv-community">
+  <div class="lv-community__header">
+    <h2 class="lv-community__title">{{ section.settings.title }}</h2>
+    <p class="lv-community__subtitle">{{ section.settings.subtitle }}</p>
+  </div>
+
+  <div class="lv-community__slider-wrap">
+    <div class="lv-community__overflow">
+      <div class="lv-community__track" id="lvCommunityTrack">
+        {% for block in section.blocks %}
+          {% assign comm_product = all_products[block.settings.product_handle] %}
+          <div class="lv-community__item">
+            <div class="lv-community__video-wrap">
+              {% if block.settings.video_url != blank %}
+                <video
+                  class="lv-community__video"
+                  src="{{ block.settings.video_url }}"
+                  loop muted autoplay playsinline preload="auto"
+                ></video>
+                <button class="lv-community__sound-btn">🔇</button>
+                <div class="lv-community__overlay"></div>
+              {% else %}
+                <div class="lv-community__empty">
+                  <span>📹</span>
+                  <span>Paste video URL in settings</span>
+                </div>
+              {% endif %}
+            </div>
+            <div class="lv-community__info">
+              {% if comm_product %}
+                <div class="lv-community__product-row">
+                  {% if comm_product.featured_image %}
+                    <img src="{{ comm_product.featured_image | image_url: width: 100 }}"
+                      class="lv-community__product-img" alt="{{ comm_product.title }}">
+                  {% endif %}
+                  <div class="lv-community__product-details">
+                    <span class="lv-community__product-name">{{ comm_product.title }}</span>
+                    <div class="lv-community__product-price">
+                      {% if comm_product.compare_at_price > comm_product.price %}
+                        <span class="lv-community__compare">{{ comm_product.compare_at_price | money }}</span>
+                      {% endif %}
+                      <span class="lv-community__price">{{ comm_product.price | money }}</span>
+                    </div>
+                  </div>
+                  {% if comm_product.available %}
+                    <button class="lv-community__cart-btn"
+                      onclick="lvCommAddToCart(event, '{{ comm_product.variants.first.id }}')">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                      </svg>
+                    </button>
+                  {% else %}
+                    <button class="lv-community__cart-btn lv-community__cart-btn--disabled" disabled>✕</button>
+                  {% endif %}
+                </div>
+              {% else %}
+                <div class="lv-community__no-product">Enter product handle in settings</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="lv-community__dots" id="lvCommunityDots"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Loved By Community",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Section Title", "default": "Loved by Our Community" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Real people. Real results. Real dark." }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Customer Video",
+      "settings": [
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "Shopify Admin → Content → Files → Upload video → Copy URL → Paste here"
+        },
+        {
+          "type": "text",
+          "id": "product_handle",
+          "label": "Product Handle",
+          "info": "Last part of product URL only e.g. blood-stain-cosmic-void"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Loved By Community",
+      "blocks": [
+        { "type": "video" },
+        { "type": "video" },
+        { "type": "video" },
+        { "type": "video" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap');
+
+.lv-community { background: #8b0000; padding: 60px 20px; text-align: center; }
+.lv-community__header { margin-bottom: 40px; }
+.lv-community__title {
+  color: #fff; font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem; font-weight: 400; font-style: italic;
+  letter-spacing: 2px; margin: 0 0 12px;
+}
+.lv-community__subtitle { color: rgba(255,255,255,0.7); font-size: 0.95rem; letter-spacing: 1px; margin: 0; }
+.lv-community__slider-wrap { max-width: 1300px; margin: 0 auto; }
+.lv-community__overflow { overflow: hidden; width: 100%; }
+.lv-community__track {
+  display: flex; gap: 16px;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.lv-community__item {
+  flex: 0 0 calc((100% - 48px) / 4);
+  display: flex; flex-direction: column;
+  border-radius: 12px; overflow: hidden;
+  background: rgba(0,0,0,0.25);
+}
+.lv-community__video-wrap {
+  position: relative; aspect-ratio: 9 / 16;
+  overflow: hidden; background: #3a0000;
+}
+.lv-community__video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lv-community__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 45%);
+  pointer-events: none;
+}
+.lv-community__empty {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; color: rgba(255,255,255,0.3); font-size: 0.8rem;
+}
+.lv-community__sound-btn {
+  position: absolute; bottom: 10px; right: 10px;
+  width: 30px; height: 30px; background: rgba(0,0,0,0.65);
+  border: none; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center;
+  font-size: 0.8rem; cursor: pointer; z-index: 3; padding: 0;
+}
+.lv-community__info {
+  padding: 8px 10px; background: rgba(0,0,0,0.3);
+  min-height: 64px; display: flex; align-items: center;
+}
+.lv-community__product-row { display: flex; align-items: center; gap: 8px; width: 100%; }
+.lv-community__product-img { width: 46px; height: 46px; object-fit: cover; border-radius: 6px; flex-shrink: 0; }
+.lv-community__product-details { flex: 1; text-align: left; min-width: 0; }
+.lv-community__product-name {
+  color: #fff; font-size: 0.75rem;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; line-height: 1.3; margin-bottom: 3px;
+}
+.lv-community__product-price { display: flex; gap: 5px; align-items: center; }
+.lv-community__compare { color: rgba(255,255,255,0.35); text-decoration: line-through; font-size: 0.7rem; }
+.lv-community__price { color: #fff; font-size: 0.8rem; font-weight: 700; }
+.lv-community__cart-btn {
+  width: 34px; height: 34px; min-width: 34px; border-radius: 50%;
+  background: #fff; color: #8b0000; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s; padding: 0;
+}
+.lv-community__cart-btn:hover { background: #ffe0e0; transform: scale(1.08); }
+.lv-community__cart-btn--disabled { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); cursor: not-allowed; }
+.lv-community__no-product { color: rgba(255,255,255,0.3); font-size: 0.72rem; padding: 4px; text-align: center; width: 100%; }
+.lv-community__dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+.lv-community-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.3); border: none; cursor: pointer;
+  transition: background 0.3s; padding: 0;
+}
+.lv-community-dot.active { background: #fff; }
+
+@media (max-width: 768px) {
+  .lv-community { padding: 40px 16px; }
+  .lv-community__title { font-size: 2rem; }
+  .lv-community__item { flex: 0 0 calc((100% - 12px) / 2); }
+}
+</style>
+
+<script>
+(function() {
+  const track = document.getElementById('lvCommunityTrack');
+  const dotsContainer = document.getElementById('lvCommunityDots');
+  if (!track) return;
+
+  const total = track.querySelectorAll('.lv-community__item').length;
+  let current = 0, sliderTimer;
+
+  const slidesVisible = () => window.innerWidth <= 768 ? 2 : 4;
+  const maxIndex = () => Math.max(0, total - slidesVisible());
+  const slideWidth = () => {
+    const gap = 16, sv = slidesVisible();
+    return (track.parentElement.offsetWidth - gap * (sv - 1)) / sv + gap;
+  };
+
+  function buildDots() {
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i <= maxIndex(); i++) {
+      const d = document.createElement('button');
+      d.className = 'lv-community-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => { goTo(i); resetTimer(); });
+      dotsContainer.appendChild(d);
+    }
+  }
+
+  function goTo(idx) {
+    current = Math.max(0, Math.min(idx, maxIndex()));
+    track.style.transform = `translateX(-${current * slideWidth()}px)`;
+    dotsContainer.querySelectorAll('.lv-community-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === current));
+  }
+
+  function startTimer() {
+    sliderTimer = setInterval(() => goTo(current >= maxIndex() ? 0 : current + 1), 4000);
+  }
+  function resetTimer() { clearInterval(sliderTimer); startTimer(); }
+
+  track.parentElement.addEventListener('mouseenter', () => clearInterval(sliderTimer));
+  track.parentElement.addEventListener('mouseleave', startTimer);
+
+  let tx = 0;
+  track.addEventListener('touchstart', e => tx = e.touches[0].clientX, { passive: true });
+  track.addEventListener('touchend', e => {
+    const diff = tx - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { goTo(diff > 0 ? current + 1 : current - 1); resetTimer(); }
+  });
+
+  window.addEventListener('resize', () => { buildDots(); goTo(0); });
+
+  document.querySelectorAll('.lv-community__video-wrap').forEach(wrap => {
+    const video = wrap.querySelector('.lv-community__video');
+    const soundBtn = wrap.querySelector('.lv-community__sound-btn');
+    if (!video) return;
+    video.muted = true;
+    video.play().catch(() => {});
+    if (soundBtn) {
+      soundBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        video.muted = !video.muted;
+        soundBtn.textContent = video.muted ? '🔇' : '🔊';
+      });
+    }
+  });
+
+  window.lvCommAddToCart = function(e, variantId) {
+    e.preventDefault(); e.stopPropagation();
+    const btn = e.currentTarget, orig = btn.innerHTML;
+    btn.innerHTML = '✓'; btn.style.cssText = 'background:#2a7a2a;color:#fff;';
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: variantId, quantity: 1 })
+    })
+    .then(r => r.json())
+    .then(() => setTimeout(() => { btn.innerHTML = orig; btn.style.cssText = ''; }, 2000))
+    .catch(() => { btn.innerHTML = '✕'; setTimeout(() => { btn.innerHTML = orig; btn.style.cssText = ''; }, 2000); });
+  };
+
+  buildDots();
+  startTimer();
+})();
+</script>

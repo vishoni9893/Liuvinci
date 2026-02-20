@@ -1,0 +1,459 @@
+{% comment %}
+  LV Footer Section — Liu Vinci Dark Aesthetics Brand
+  Shopify Dawn Theme Compatible
+{% endcomment %}
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+
+<footer class="lv-footer" role="contentinfo">
+
+  <div class="lv-footer__subscribe-band">
+    <div class="lv-footer__subscribe-inner">
+      <div class="lv-footer__subscribe-text">
+        <span class="lv-footer__subscribe-eyebrow">{{ section.settings.subscribe_eyebrow }}</span>
+        <h2 class="lv-footer__subscribe-heading">{{ section.settings.subscribe_heading }}</h2>
+        <p class="lv-footer__subscribe-subtext">{{ section.settings.subscribe_subtext }}</p>
+      </div>
+      <div class="lv-footer__subscribe-form-wrap">
+        {% form 'customer', id: 'lv-subscribe-form', class: 'lv-footer__subscribe-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="lv-footer__input-row">
+            <input type="email" name="contact[email]" class="lv-footer__email-input" placeholder="{{ section.settings.input_placeholder }}" autocomplete="email" required>
+            <button type="submit" class="lv-footer__subscribe-btn">
+              <span>{{ section.settings.button_text }}</span>
+              <span>→</span>
+            </button>
+          </div>
+          {%- if form.posted_successfully? -%}
+            <p class="lv-footer__success-msg">{{ section.settings.success_message }}</p>
+          {%- endif -%}
+        {% endform %}
+        <p class="lv-footer__privacy-note">{{ section.settings.privacy_note }}</p>
+      </div>
+    </div>
+    <div class="lv-footer__subscribe-ornament">
+      <span class="lv-footer__ornament-line"></span>
+      <svg class="lv-footer__ornament-icon" viewBox="0 0 40 40" fill="none">
+        <path d="M20 2 L22 16 L36 10 L26 20 L36 30 L22 24 L20 38 L18 24 L4 30 L14 20 L4 10 L18 16 Z" fill="#8b0000" opacity="0.7"/>
+      </svg>
+      <span class="lv-footer__ornament-line"></span>
+    </div>
+  </div>
+
+  <div class="lv-footer__body">
+    <div class="lv-footer__grid">
+
+      <div class="lv-footer__col lv-footer__col--brand">
+        {% if section.settings.footer_logo != blank %}
+          <img src="{{ section.settings.footer_logo | img_url: '200x' }}" alt="{{ shop.name }}" class="lv-footer__logo" loading="lazy">
+        {% else %}
+          <span class="lv-footer__brand-name">{{ shop.name }}</span>
+        {% endif %}
+        <p class="lv-footer__brand-tagline">{{ section.settings.brand_tagline }}</p>
+        <p class="lv-footer__brand-desc">{{ section.settings.brand_description }}</p>
+        <div class="lv-footer__social">
+          {% if section.settings.social_instagram != blank %}
+            <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" class="lv-footer__social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_youtube != blank %}
+            <a href="{{ section.settings.social_youtube }}" target="_blank" rel="noopener" class="lv-footer__social-link" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_facebook != blank %}
+            <a href="{{ section.settings.social_facebook }}" target="_blank" rel="noopener" class="lv-footer__social-link" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_pinterest != blank %}
+            <a href="{{ section.settings.social_pinterest }}" target="_blank" rel="noopener" class="lv-footer__social-link" aria-label="Pinterest">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.853 0 1.267.641 1.267 1.408 0 .858-.546 2.142-.828 3.33-.236.995.499 1.806 1.476 1.806 1.77 0 3.133-1.866 3.133-4.561 0-2.385-1.715-4.053-4.164-4.053-2.835 0-4.498 2.126-4.498 4.323 0 .856.33 1.773.741 2.273a.3.3 0 0 1 .069.286c-.076.312-.244.995-.277 1.134-.044.183-.145.222-.334.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.966-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446C17.523 22 22 17.523 22 12S17.523 2 12 2z"/></svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="lv-footer__col lv-footer__col--links">
+        <h3 class="lv-footer__col-heading"><span>{{ section.settings.shop_heading }}</span></h3>
+        <ul class="lv-footer__link-list">
+          {% for i in (1..8) %}
+            {% assign label_key = 'shop_link_' | append: i | append: '_label' %}
+            {% assign url_key = 'shop_link_' | append: i | append: '_url' %}
+            {% if section.settings[label_key] != blank %}
+              <li><a href="{{ section.settings[url_key] | default: '#' }}" class="lv-footer__link">{{ section.settings[label_key] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="lv-footer__col lv-footer__col--links">
+        <h3 class="lv-footer__col-heading"><span>{{ section.settings.help_heading }}</span></h3>
+        <ul class="lv-footer__link-list">
+          {% for i in (1..8) %}
+            {% assign label_key = 'help_link_' | append: i | append: '_label' %}
+            {% assign url_key = 'help_link_' | append: i | append: '_url' %}
+            {% if section.settings[label_key] != blank %}
+              <li><a href="{{ section.settings[url_key] | default: '#' }}" class="lv-footer__link">{{ section.settings[label_key] }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="lv-footer__col lv-footer__col--contact">
+        <h3 class="lv-footer__col-heading"><span>{{ section.settings.contact_heading }}</span></h3>
+        {% if section.settings.contact_email != blank %}
+          <a href="mailto:{{ section.settings.contact_email }}" class="lv-footer__contact-item">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M2 7l8 5 8-5"/></svg>
+            {{ section.settings.contact_email }}
+          </a>
+        {% endif %}
+        {% if section.settings.contact_phone != blank %}
+          <a href="tel:{{ section.settings.contact_phone }}" class="lv-footer__contact-item">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4a1 1 0 0 1 1-1h3l1.5 4-2 1.5a11 11 0 0 0 4 4l1.5-2 4 1.5v3a1 1 0 0 1-1 1C6.716 17 3 9.284 3 4z"/></svg>
+            {{ section.settings.contact_phone }}
+          </a>
+        {% endif %}
+        {% if section.settings.contact_address != blank %}
+          <p class="lv-footer__contact-item">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a6 6 0 0 0-6 6c0 4 6 10 6 10s6-6 6-10a6 6 0 0 0-6-6z"/><circle cx="10" cy="8" r="2"/></svg>
+            {{ section.settings.contact_address }}
+          </p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <div class="lv-footer__bottom">
+    <div class="lv-footer__bottom-inner">
+      <p class="lv-footer__copyright">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.copyright_text }}</p>
+      <div class="lv-footer__bottom-links">
+        {% if section.settings.policy_link_1_label != blank %}
+          <a href="{{ section.settings.policy_link_1_url | default: '#' }}" class="lv-footer__policy-link">{{ section.settings.policy_link_1_label }}</a>
+        {% endif %}
+        {% if section.settings.policy_link_2_label != blank %}
+          <span class="lv-footer__policy-sep">·</span>
+          <a href="{{ section.settings.policy_link_2_url | default: '#' }}" class="lv-footer__policy-link">{{ section.settings.policy_link_2_label }}</a>
+        {% endif %}
+        {% if section.settings.policy_link_3_label != blank %}
+          <span class="lv-footer__policy-sep">·</span>
+          <a href="{{ section.settings.policy_link_3_url | default: '#' }}" class="lv-footer__policy-link">{{ section.settings.policy_link_3_label }}</a>
+        {% endif %}
+      </div>
+      <p class="lv-footer__made-in">{{ section.settings.made_in_text }}</p>
+    </div>
+  </div>
+
+</footer>
+
+<style>
+  .lv-footer {
+    --lv-bg:          #0a0000;
+    --lv-bg-mid:      #100304;
+    --lv-red:         #8b0000;
+    --lv-red-light:   #b50000;
+    --lv-red-dim:     rgba(139,0,0,0.18);
+    --lv-white:       #f5eeea;
+    --lv-white-dim:   rgba(245,238,234,0.75);
+    --lv-white-faint: rgba(245,238,234,0.45);
+    --lv-border:      rgba(139,0,0,0.35);
+    --lv-font:        'Cormorant Garamond', Georgia, serif;
+    --lv-ease:        cubic-bezier(0.25, 0, 0.15, 1);
+    background-color: var(--lv-bg);
+    color: var(--lv-white);
+    font-family: var(--lv-font);
+    position: relative;
+    overflow: hidden;
+  }
+  .lv-footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+  .lv-footer > * { position: relative; z-index: 1; }
+
+  .lv-footer__subscribe-band {
+    background: linear-gradient(135deg, #150204 0%, #1a0305 50%, #0f0202 100%);
+    border-bottom: 1px solid var(--lv-border);
+    padding: 5rem 4rem 0;
+    position: relative;
+  }
+  .lv-footer__subscribe-band::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--lv-red), transparent);
+  }
+  .lv-footer__subscribe-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding-bottom: 4rem;
+  }
+  .lv-footer__subscribe-eyebrow {
+    display: block;
+    font-size: 1.3rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--lv-red-light);
+    margin-bottom: 1rem;
+  }
+  .lv-footer__subscribe-heading {
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--lv-white);
+    margin: 0 0 1rem;
+    letter-spacing: 0.02em;
+  }
+  .lv-footer__subscribe-subtext {
+    font-size: 1.5rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--lv-white-dim);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .lv-footer__input-row {
+    display: flex;
+    border: 1px solid var(--lv-red);
+    background: rgba(10,0,0,0.6);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .lv-footer__input-row:focus-within {
+    border-color: var(--lv-red-light);
+    box-shadow: 0 0 0 3px var(--lv-red-dim);
+  }
+  .lv-footer__email-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 1.6rem 1.8rem;
+    font-family: var(--lv-font);
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--lv-white);
+    min-width: 0;
+  }
+  .lv-footer__email-input::placeholder { color: var(--lv-white-dim); font-style: italic; }
+  .lv-footer__subscribe-btn {
+    background: var(--lv-red);
+    border: none;
+    padding: 1.6rem 2.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--lv-font);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lv-white);
+    transition: background 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .lv-footer__subscribe-btn:hover { background: var(--lv-red-light); }
+  .lv-footer__success-msg { color: var(--lv-red-light); font-size: 1.05rem; font-style: italic; margin: 0.75rem 0 0; }
+  .lv-footer__privacy-note { font-size: 1.15rem; color: var(--lv-white-faint); margin: 0.85rem 0 0; letter-spacing: 0.03em; }
+
+  .lv-footer__subscribe-ornament {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 2rem 0 2.5rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .lv-footer__ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--lv-border)); }
+  .lv-footer__ornament-line:last-child { background: linear-gradient(90deg, var(--lv-border), transparent); }
+  .lv-footer__ornament-icon { width: 24px; height: 24px; flex-shrink: 0; }
+
+  .lv-footer__body { padding: 4.5rem 4rem; max-width: 1200px; margin: 0 auto; }
+  .lv-footer__grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 3rem 4rem; }
+
+  .lv-footer__col-heading {
+    font-size: 1.3rem; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--lv-red-light);
+    margin: 0 0 1.75rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .lv-footer__col-heading::after { content: ''; flex: 1; height: 1px; background: var(--lv-border); }
+
+  .lv-footer__logo { max-width: 140px; filter: brightness(0) invert(1); margin-bottom: 1.2rem; display: block; }
+  .lv-footer__brand-name {
+    font-size: 2.6rem; font-weight: 600; letter-spacing: 0.12em;
+    color: var(--lv-white); display: block; margin-bottom: 0.6rem; line-height: 1;
+  }
+  .lv-footer__brand-tagline { font-size: 1.2rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--lv-red-light); margin: 0 0 1.2rem; }
+  .lv-footer__brand-desc { font-size: 1.4rem; font-weight: 300; font-style: italic; color: var(--lv-white-dim); line-height: 1.75; margin: 0 0 1.75rem; }
+
+  .lv-footer__social { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .lv-footer__social-link {
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    border: 1px solid var(--lv-border); color: var(--lv-white-dim);
+    transition: all 0.3s; text-decoration: none;
+  }
+  .lv-footer__social-link svg { width: 18px; height: 18px; }
+  .lv-footer__social-link:hover { border-color: var(--lv-red); color: var(--lv-white); background: var(--lv-red-dim); }
+
+  .lv-footer__link-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; }
+  .lv-footer__link { font-size: 1.35rem; font-weight: 300; color: var(--lv-white-dim); text-decoration: none; transition: color 0.25s; display: inline-block; line-height: 1.4; }
+  .lv-footer__link:hover { color: var(--lv-white); letter-spacing: 0.03em; }
+
+  .lv-footer__contact-item {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    font-size: 1.05rem; font-weight: 300; color: var(--lv-white-dim);
+    text-decoration: none; margin-bottom: 1.1rem; transition: color 0.25s; line-height: 1.55;
+  }
+  .lv-footer__contact-item svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 3px; color: var(--lv-red); }
+  .lv-footer__contact-item:hover { color: var(--lv-white); }
+
+  .lv-footer__bottom { border-top: 1px solid var(--lv-border); padding: 1.75rem 4rem; background: rgba(0,0,0,0.35); }
+  .lv-footer__bottom-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .lv-footer__copyright, .lv-footer__made-in { font-size: 0.9rem; letter-spacing: 0.06em; color: var(--lv-white-faint); margin: 0; }
+  .lv-footer__made-in { font-style: italic; }
+  .lv-footer__bottom-links { display: flex; align-items: center; gap: 0.6rem; }
+  .lv-footer__policy-link { font-size: 0.9rem; letter-spacing: 0.05em; color: var(--lv-white-faint); text-decoration: none; transition: color 0.2s; }
+  .lv-footer__policy-link:hover { color: var(--lv-white-dim); }
+  .lv-footer__policy-sep { color: var(--lv-border); font-size: 0.9rem; }
+
+  @media (max-width: 900px) {
+    .lv-footer__subscribe-band { padding: 4rem 2.5rem 0; }
+    .lv-footer__subscribe-inner { grid-template-columns: 1fr; gap: 2.5rem; padding-bottom: 3rem; }
+    .lv-footer__body { padding: 3.5rem 2.5rem; }
+    .lv-footer__grid { grid-template-columns: 1fr 1fr; gap: 2.5rem 3rem; }
+    .lv-footer__col--brand { grid-column: 1 / -1; }
+    .lv-footer__bottom { padding: 1.5rem 2.5rem; }
+  }
+
+  @media (max-width: 600px) {
+    .lv-footer__subscribe-band { padding: 3rem 1.5rem 0; }
+    .lv-footer__subscribe-inner { gap: 2rem; padding-bottom: 2.5rem; }
+    .lv-footer__subscribe-heading { font-size: 1.9rem; }
+    .lv-footer__subscribe-subtext { font-size: 1.1rem; }
+    .lv-footer__input-row { flex-direction: column; }
+    .lv-footer__subscribe-btn { justify-content: center; padding: 1rem 1.5rem; }
+    .lv-footer__body { padding: 3rem 1.5rem; }
+    .lv-footer__grid { grid-template-columns: 1fr; gap: 0; }
+    .lv-footer__col--brand { margin-bottom: 2rem; }
+    .lv-footer__brand-name { font-size: 2.2rem; }
+    .lv-footer__bottom { padding: 1.5rem; }
+    .lv-footer__bottom-inner { flex-direction: column; text-align: center; gap: 0.75rem; }
+    .lv-footer__bottom-links { flex-wrap: wrap; justify-content: center; }
+    .lv-footer__col--links,
+    .lv-footer__col--contact { border-top: 1px solid var(--lv-border); padding-top: 1rem; padding-bottom: 0.5rem; }
+    .lv-footer__col--links .lv-footer__col-heading,
+    .lv-footer__col--contact .lv-footer__col-heading { cursor: pointer; user-select: none; margin-bottom: 0; }
+    .lv-footer__col--links .lv-footer__col-heading::after,
+    .lv-footer__col--contact .lv-footer__col-heading::after { display: none; }
+    .lv-footer__col--links .lv-footer__col-heading::before,
+    .lv-footer__col--contact .lv-footer__col-heading::before { content: '+'; margin-left: auto; font-size: 1.2rem; color: var(--lv-red); order: 99; font-weight: 300; }
+    .lv-footer__col--links.is-open .lv-footer__col-heading::before,
+    .lv-footer__col--contact.is-open .lv-footer__col-heading::before { content: '−'; }
+    .lv-footer__col--links .lv-footer__link-list { display: none; margin-top: 1.2rem; }
+    .lv-footer__col--contact .lv-footer__contact-item { display: none; }
+    .lv-footer__col--links.is-open .lv-footer__link-list { display: flex; }
+    .lv-footer__col--contact.is-open .lv-footer__contact-item { display: flex; margin-top: 1rem; }
+    .lv-footer__social { gap: 0.6rem; }
+  }
+</style>
+
+<script>
+(function() {
+  function initAccordion() {
+    if (window.innerWidth > 600) return;
+    var cols = document.querySelectorAll('.lv-footer__col--links, .lv-footer__col--contact');
+    cols.forEach(function(col) {
+      var heading = col.querySelector('.lv-footer__col-heading');
+      if (!heading) return;
+      heading.addEventListener('click', function() { col.classList.toggle('is-open'); });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initAccordion);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "LV Footer",
+  "settings": [
+    { "type": "header", "content": "Subscribe Band" },
+    { "type": "text", "id": "subscribe_eyebrow", "label": "Eyebrow Text", "default": "Join the Dark Side" },
+    { "type": "text", "id": "subscribe_heading", "label": "Subscribe Heading", "default": "Be a Part of India's First Bold Community" },
+    { "type": "text", "id": "subscribe_subtext", "label": "Subscribe Subtext", "default": "Subscribe to stay updated on exclusive offers, new launches & upcoming community meetups." },
+    { "type": "text", "id": "input_placeholder", "label": "Email Placeholder", "default": "Enter your email address" },
+    { "type": "text", "id": "button_text", "label": "Button Text", "default": "Subscribe" },
+    { "type": "text", "id": "success_message", "label": "Success Message", "default": "You're in! Welcome to the Liu Vinci community." },
+    { "type": "text", "id": "privacy_note", "label": "Privacy Note", "default": "No spam, ever. Unsubscribe anytime." },
+    { "type": "header", "content": "Brand Column" },
+    { "type": "image_picker", "id": "footer_logo", "label": "Footer Logo (optional)" },
+    { "type": "text", "id": "brand_tagline", "label": "Brand Tagline", "default": "Dark. Bold. Unapologetic." },
+    { "type": "textarea", "id": "brand_description", "label": "Brand Description", "default": "Cosmetics crafted for the ones who wear their darkness like armour." },
+    { "type": "text", "id": "social_instagram", "label": "Instagram URL" },
+    { "type": "text", "id": "social_youtube", "label": "YouTube URL" },
+    { "type": "text", "id": "social_facebook", "label": "Facebook URL" },
+    { "type": "text", "id": "social_pinterest", "label": "Pinterest URL" },
+    { "type": "header", "content": "Shop Links" },
+    { "type": "text", "id": "shop_heading", "label": "Column Heading", "default": "Shop" },
+    { "type": "text", "id": "shop_link_1_label", "label": "Link 1 Label", "default": "Eyes" },
+    { "type": "url", "id": "shop_link_1_url", "label": "Link 1 URL" },
+    { "type": "text", "id": "shop_link_2_label", "label": "Link 2 Label", "default": "Lips" },
+    { "type": "url", "id": "shop_link_2_url", "label": "Link 2 URL" },
+    { "type": "text", "id": "shop_link_3_label", "label": "Link 3 Label", "default": "Face" },
+    { "type": "url", "id": "shop_link_3_url", "label": "Link 3 URL" },
+    { "type": "text", "id": "shop_link_4_label", "label": "Link 4 Label", "default": "Accessories" },
+    { "type": "url", "id": "shop_link_4_url", "label": "Link 4 URL" },
+    { "type": "text", "id": "shop_link_5_label", "label": "Link 5 Label", "default": "Value Sets" },
+    { "type": "url", "id": "shop_link_5_url", "label": "Link 5 URL" },
+    { "type": "text", "id": "shop_link_6_label", "label": "Link 6 Label" },
+    { "type": "url", "id": "shop_link_6_url", "label": "Link 6 URL" },
+    { "type": "text", "id": "shop_link_7_label", "label": "Link 7 Label" },
+    { "type": "url", "id": "shop_link_7_url", "label": "Link 7 URL" },
+    { "type": "text", "id": "shop_link_8_label", "label": "Link 8 Label" },
+    { "type": "url", "id": "shop_link_8_url", "label": "Link 8 URL" },
+    { "type": "header", "content": "Support Links" },
+    { "type": "text", "id": "help_heading", "label": "Column Heading", "default": "Support" },
+    { "type": "text", "id": "help_link_1_label", "label": "Link 1 Label", "default": "Contact Us" },
+    { "type": "url", "id": "help_link_1_url", "label": "Link 1 URL" },
+    { "type": "text", "id": "help_link_2_label", "label": "Link 2 Label", "default": "Shipping & Returns" },
+    { "type": "url", "id": "help_link_2_url", "label": "Link 2 URL" },
+    { "type": "text", "id": "help_link_3_label", "label": "Link 3 Label", "default": "Privacy Policy" },
+    { "type": "url", "id": "help_link_3_url", "label": "Link 3 URL" },
+    { "type": "text", "id": "help_link_4_label", "label": "Link 4 Label", "default": "Terms of Service" },
+    { "type": "url", "id": "help_link_4_url", "label": "Link 4 URL" },
+    { "type": "text", "id": "help_link_5_label", "label": "Link 5 Label", "default": "Refund Policy" },
+    { "type": "url", "id": "help_link_5_url", "label": "Link 5 URL" },
+    { "type": "text", "id": "help_link_6_label", "label": "Link 6 Label", "default": "FAQs" },
+    { "type": "url", "id": "help_link_6_url", "label": "Link 6 URL" },
+    { "type": "text", "id": "help_link_7_label", "label": "Link 7 Label" },
+    { "type": "url", "id": "help_link_7_url", "label": "Link 7 URL" },
+    { "type": "text", "id": "help_link_8_label", "label": "Link 8 Label" },
+    { "type": "url", "id": "help_link_8_url", "label": "Link 8 URL" },
+    { "type": "header", "content": "Contact Column" },
+    { "type": "text", "id": "contact_heading", "label": "Column Heading", "default": "Get in Touch" },
+    { "type": "text", "id": "contact_email", "label": "Email", "default": "hello@liuvinci.com" },
+    { "type": "text", "id": "contact_phone", "label": "Phone" },
+    { "type": "textarea", "id": "contact_address", "label": "Address" },
+    { "type": "header", "content": "Bottom Bar" },
+    { "type": "text", "id": "copyright_text", "label": "Copyright Text", "default": "All Rights Reserved." },
+    { "type": "text", "id": "made_in_text", "label": "Made In Text", "default": "Made with darkness & devotion in India 🖤" },
+    { "type": "text", "id": "policy_link_1_label", "label": "Policy Link 1 Label", "default": "Privacy" },
+    { "type": "url", "id": "policy_link_1_url", "label": "Policy Link 1 URL" },
+    { "type": "text", "id": "policy_link_2_label", "label": "Policy Link 2 Label", "default": "Terms" },
+    { "type": "url", "id": "policy_link_2_url", "label": "Policy Link 2 URL" },
+    { "type": "text", "id": "policy_link_3_label", "label": "Policy Link 3 Label", "default": "Refunds" },
+    { "type": "url", "id": "policy_link_3_url", "label": "Policy Link 3 URL" }
+  ],
+  "presets": [{ "name": "LV Footer" }]
+}
+{% endschema %}

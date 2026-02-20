@@ -1,0 +1,273 @@
+<section class="lv-categories">
+  <div class="lv-categories__header">
+    <h2 class="lv-categories__title">{{ section.settings.title }}</h2>
+  </div>
+
+  <div class="lv-slider-wrap">
+    <button class="lv-btn lv-btn--prev" onclick="lvSlide(-1)">&#8249;</button>
+    
+    <div class="lv-slider-overflow">
+      <div class="lv-slider__track" id="lvSliderTrack">
+        {% for block in section.blocks %}
+          <a href="{{ block.settings.link }}" class="lv-slide-item">
+            {% if block.settings.image %}
+              {{
+                block.settings.image
+                | image_url: width: 600
+                | image_tag: class: 'lv-slide-img', alt: block.settings.label
+              }}
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <button class="lv-btn lv-btn--next" onclick="lvSlide(1)">&#8250;</button>
+  </div>
+
+  <div class="lv-slider__dots" id="lvDots"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Category Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Shop By Category"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed (seconds)",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category Image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Category Name",
+          "default": "Category"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Category Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Grid",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap');
+
+.lv-categories {
+  background: #0a0000;
+  padding: 60px 0;
+  text-align: center;
+  overflow: hidden;
+}
+
+.lv-categories__header {
+  margin-bottom: 40px;
+  padding: 0 40px;
+}
+
+.lv-categories__title {
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.lv-slider-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.lv-slider-overflow {
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Smooth animation */
+.lv-slider__track {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.lv-slide-item {
+  flex: 0 0 calc((100% - 48px) / 4);
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  background: #111;
+}
+
+.lv-slide-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 864 / 1184;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.lv-slide-item:hover .lv-slide-img {
+  transform: scale(1.04);
+}
+
+/* Arrows hidden */
+.lv-btn {
+  display: none;
+}
+
+/* Dots */
+.lv-slider__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+.lv-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  padding: 0;
+}
+.lv-dot.active { background: #fff; }
+
+/* Mobile - 2 cards */
+@media (max-width: 768px) {
+  .lv-categories { padding: 40px 0; }
+  .lv-slider-wrap { padding: 0 20px; }
+  .lv-slide-item {
+    flex: 0 0 calc((100% - 12px) / 2);
+  }
+  .lv-categories__title { font-size: 2rem; }
+}
+</style>
+
+<script>
+(function() {
+  const track = document.getElementById('lvSliderTrack');
+  const dotsContainer = document.getElementById('lvDots');
+  const items = track.querySelectorAll('.lv-slide-item');
+  const total = items.length;
+  const speed = {{ section.settings.autoplay_speed | default: 3 }} * 1000;
+
+  let current = 0;
+  let autoplay;
+
+  function slidesVisible() {
+    return window.innerWidth <= 768 ? 2 : 4;
+  }
+
+  function maxIndex() {
+    return Math.max(0, total - slidesVisible());
+  }
+
+  function buildDots() {
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i <= maxIndex(); i++) {
+      const dot = document.createElement('button');
+      dot.classList.add('lv-dot');
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => { goTo(i); resetAutoplay(); });
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function updateDots() {
+    dotsContainer.querySelectorAll('.lv-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function getSlideWidth() {
+    const gap = 16;
+    const sv = slidesVisible();
+    return (track.parentElement.offsetWidth - gap * (sv - 1)) / sv + gap;
+  }
+
+  function goTo(index) {
+    current = Math.max(0, Math.min(index, maxIndex()));
+    track.style.transform = `translateX(-${current * getSlideWidth()}px)`;
+    updateDots();
+  }
+
+  window.lvSlide = function(dir) {
+    const next = current + dir;
+    goTo(next > maxIndex() ? 0 : next < 0 ? maxIndex() : next);
+    resetAutoplay();
+  }
+
+  function startAutoplay() {
+    autoplay = setInterval(() => {
+      const next = current >= maxIndex() ? 0 : current + 1;
+      goTo(next);
+    }, speed);
+  }
+
+  function resetAutoplay() {
+    clearInterval(autoplay);
+    startAutoplay();
+  }
+
+  track.parentElement.addEventListener('mouseenter', () => clearInterval(autoplay));
+  track.parentElement.addEventListener('mouseleave', startAutoplay);
+
+  let startX = 0;
+  track.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive: true});
+  track.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) lvSlide(diff > 0 ? 1 : -1);
+  });
+
+  window.addEventListener('resize', () => { buildDots(); goTo(0); });
+
+  buildDots();
+  startAutoplay();
+})();
+</script>

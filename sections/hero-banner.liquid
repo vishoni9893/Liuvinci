@@ -1,0 +1,81 @@
+<section class="lv-hero">
+  {% if section.settings.hero_image_desktop %}
+    <span class="lv-hero__desktop">
+      {{
+        section.settings.hero_image_desktop
+        | image_url: width: 1440
+        | image_tag: class: 'lv-hero__img', alt: 'Liu Vinci Hero'
+      }}
+    </span>
+  {% endif %}
+
+  {% if section.settings.hero_image_mobile %}
+    <span class="lv-hero__mobile">
+      {{
+        section.settings.hero_image_mobile
+        | image_url: width: 732
+        | image_tag: class: 'lv-hero__img', alt: 'Liu Vinci Hero'
+      }}
+    </span>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image_desktop",
+      "label": "Hero Image - Desktop (1440x730)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mobile",
+      "label": "Hero Image - Mobile (732x1440)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.lv-hero {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.lv-hero__img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Desktop */
+.lv-hero__desktop { display: block; }
+.lv-hero__desktop .lv-hero__img {
+  width: 100%;
+  height: auto;
+  max-height: 730px;
+  object-fit: cover;
+  object-position: center center;
+}
+.lv-hero__mobile { display: none; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .lv-hero__desktop { display: none; }
+  .lv-hero__mobile { display: block; }
+  .lv-hero__mobile .lv-hero__img {
+    width: 100%;
+    height: 100svh;
+    object-fit: cover;
+    object-position: center top;
+  }
+}
+</style>

@@ -1,0 +1,423 @@
+<section class="lv-best">
+  <h2 class="lv-best__title">{{ section.settings.title }}</h2>
+
+  <div class="lv-best-slider-wrap">
+    <div class="lv-best-overflow">
+      <div class="lv-best__track" id="lvBestTrack">
+        {% if section.settings.collection != blank %}
+          {% assign best_collection = collections[section.settings.collection] %}
+          {% if best_collection != blank %}
+            {% for product in best_collection.products limit: section.settings.products_count %}
+              <a href="{{ product.url }}" class="lv-best__card">
+                <div class="lv-best__img-wrap">
+                  {% if product.compare_at_price > product.price %}
+                    <span class="lv-best__badge">
+                      {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}% OFF
+                    </span>
+                  {% endif %}
+                  {% unless product.available %}
+                    <span class="lv-best__sold-out">SOLD OUT</span>
+                  {% endunless %}
+                  {% if product.featured_image %}
+                    {{
+                      product.featured_image
+                      | image_url: width: 600
+                      | image_tag: class: 'lv-best__img', alt: product.title
+                    }}
+                  {% endif %}
+                </div>
+                <div class="lv-best__info">
+                  <h3 class="lv-best__name">{{ product.title }}</h3>
+                  <div class="lv-best__price">
+                    {% if product.compare_at_price > product.price %}
+                      <span class="lv-best__compare">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                    <span class="lv-best__current">{{ product.price | money }}</span>
+                  </div>
+                  <div class="lv-best__stars">
+                    <span class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+                      {{ product.metafields.judgeme.badge }}
+                    </span>
+                  </div>
+                  {% if product.available %}
+                    <button class="lv-best__btn"
+                      onclick="lvAddToCart(event, '{{ product.variants.first.id }}')">
+                      Add to Cart
+                    </button>
+                  {% else %}
+                    <button class="lv-best__btn lv-best__btn--disabled" disabled>
+                      Sold Out
+                    </button>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          {% endif %}
+        {% else %}
+          <p style="color:rgba(255,255,255,0.3); padding: 40px; width:100%; text-align:center;">
+            Please select a collection in the section settings.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="lv-best__dots" id="lvBestDots"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Best Sellers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to display"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Number of products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay Speed (seconds)",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best Sellers"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap');
+
+.lv-best {
+  background: #0a0000;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.lv-best__title {
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 2px;
+  margin: 0 0 40px;
+}
+
+.lv-best-slider-wrap {
+  position: relative;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.lv-best-overflow {
+  overflow: hidden;
+  width: 100%;
+}
+
+.lv-best__track {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.lv-best__card {
+  flex: 0 0 calc((100% - 48px) / 4);
+  background: #110000;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.lv-best__img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.lv-best__img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.4s ease;
+  max-height: 320px;
+}
+
+.lv-best__card:hover .lv-best__img {
+  transform: scale(1.04);
+}
+
+.lv-best__badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #8b0000;
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  z-index: 1;
+}
+
+.lv-best__sold-out {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #333;
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  z-index: 1;
+}
+
+.lv-best__info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.lv-best__name {
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  text-align: center;
+  line-height: 1.3;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lv-best__price {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.lv-best__compare {
+  color: rgba(255,255,255,0.4);
+  text-decoration: line-through;
+  font-size: 0.85rem;
+}
+
+.lv-best__current {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Stars area - always reserves space */
+.lv-best__stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  min-height: 28px;
+  width: 100%;
+}
+
+/* Force ALL Judge.me elements to white */
+.lv-best__stars .jdgm-preview-badge,
+.lv-best__stars .jdgm-prev-badge__stars,
+.lv-best__stars .jdgm-star,
+.lv-best__stars i,
+.lv-best__stars [class*="jdgm"] {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.lv-best__stars .jdgm-prev-badge__count {
+  color: rgba(255,255,255,0.6) !important;
+  font-size: 0.75rem !important;
+}
+
+.lv-best__stars .jdgm-prev-badge__text {
+  display: none !important;
+}
+
+.lv-best__btn {
+  background: #8b0000;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.3s;
+  margin-top: auto;
+  width: 100%;
+}
+
+.lv-best__btn:hover { background: #a00000; }
+
+.lv-best__btn--disabled {
+  background: #333;
+  cursor: not-allowed;
+}
+
+.lv-best__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.lv-best-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  padding: 0;
+}
+
+.lv-best-dot.active { background: #fff; }
+
+@media (max-width: 768px) {
+  .lv-best { padding: 40px 16px; }
+  .lv-best__title { font-size: 2rem; }
+  .lv-best__img { max-height: 220px; }
+  .lv-best__card {
+    flex: 0 0 calc((100% - 12px) / 2);
+    max-width: 100%;
+  }
+}
+</style>
+
+<script>
+(function() {
+  const track = document.getElementById('lvBestTrack');
+  const dotsContainer = document.getElementById('lvBestDots');
+  if (!track) return;
+
+  const items = track.querySelectorAll('.lv-best__card');
+  const total = items.length;
+  const speed = {{ section.settings.autoplay_speed | default: 3 }} * 1000;
+
+  let current = 0;
+  let autoplay;
+
+  function slidesVisible() {
+    return window.innerWidth <= 768 ? 2 : 4;
+  }
+
+  function maxIndex() {
+    return Math.max(0, total - slidesVisible());
+  }
+
+  function buildDots() {
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i <= maxIndex(); i++) {
+      const dot = document.createElement('button');
+      dot.classList.add('lv-best-dot');
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => { goTo(i); resetAutoplay(); });
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function updateDots() {
+    dotsContainer.querySelectorAll('.lv-best-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function getSlideWidth() {
+    const gap = 16;
+    const sv = slidesVisible();
+    return (track.parentElement.offsetWidth - gap * (sv - 1)) / sv + gap;
+  }
+
+  function goTo(index) {
+    current = Math.max(0, Math.min(index, maxIndex()));
+    track.style.transform = `translateX(-${current * getSlideWidth()}px)`;
+    updateDots();
+  }
+
+  function startAutoplay() {
+    autoplay = setInterval(() => {
+      goTo(current >= maxIndex() ? 0 : current + 1);
+    }, speed);
+  }
+
+  function resetAutoplay() {
+    clearInterval(autoplay);
+    startAutoplay();
+  }
+
+  track.parentElement.addEventListener('mouseenter', () => clearInterval(autoplay));
+  track.parentElement.addEventListener('mouseleave', startAutoplay);
+
+  let startX = 0;
+  track.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive: true});
+  track.addEventListener('touchend', e => {
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      goTo(diff > 0 ? current + 1 : current - 1);
+      resetAutoplay();
+    }
+  });
+
+  window.addEventListener('resize', () => { buildDots(); goTo(0); });
+
+  window.lvAddToCart = function(e, variantId) {
+    e.preventDefault();
+    const btn = e.target;
+    btn.textContent = 'Adding...';
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: variantId, quantity: 1 })
+    })
+    .then(r => r.json())
+    .then(() => {
+      btn.textContent = 'Added!';
+      setTimeout(() => btn.textContent = 'Add to Cart', 2000);
+    })
+    .catch(() => {
+      btn.textContent = 'Error';
+      setTimeout(() => btn.textContent = 'Add to Cart', 2000);
+    });
+  }
+
+  buildDots();
+  startAutoplay();
+})();
+</script>

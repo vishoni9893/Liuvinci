@@ -1,0 +1,110 @@
+<div class="lv-announcement-bar">
+  <div class="lv-announcement-bar__track">
+    <div class="lv-announcement-bar__content">
+      <span>{{ section.settings.text_1 }} &nbsp;&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp; {{ section.settings.text_2 }} &nbsp;&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp; {{ section.settings.text_3 }} &nbsp;&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp;</span>
+      <span>{{ section.settings.text_1 }} &nbsp;&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp; {{ section.settings.text_2 }} &nbsp;&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp; {{ section.settings.text_3 }} &nbsp;&nbsp;&nbsp;✦&nbsp;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lv-announcement-bar {
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+    padding: 10px 0;
+    width: 100%;
+  }
+  .lv-announcement-bar__track {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .lv-announcement-bar__content {
+    display: inline-flex;
+    animation: lv-marquee {{ section.settings.speed }}s linear infinite;
+    white-space: nowrap;
+  }
+  .lv-announcement-bar__content span {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: {{ section.settings.font_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: {{ section.settings.text_color }};
+    text-transform: uppercase;
+    padding: 0 4.5rem;
+  }
+  @keyframes lv-marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .lv-announcement-bar:hover .lv-announcement-bar__content {
+    animation-play-state: paused;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "LV Announcement Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Message 1",
+      "default": "Vegan & Cruelty Free"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Message 2",
+      "default": "Dark. Bold. Unapologetic."
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Message 3",
+      "default": "Crafted in India"
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Message 4",
+      "default": "Free Shipping above ₹999"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#8b0000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font Size",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll Speed (lower = faster)",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "LV Announcement Bar"
+    }
+  ]
+}
+{% endschema %}
