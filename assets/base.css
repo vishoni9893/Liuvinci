@@ -1970,3 +1970,364 @@ section:has(.jdgm-carousel-widget) { background: #0a0000 !important; }
 .product__media-wrapper > .product-media-container {
   --aspect-ratio: 4 / 5;
 }
+
+/* ============================================================
+   26. LV CART PAGE — Dark Gothic Theme
+   ============================================================ */
+
+/* ---- Global cart background ---- */
+cart-items,
+cart-items.gradient,
+#main-cart-footer,
+#main-cart-footer .gradient {
+  background: #0a0000 !important;
+  color: #ffffff !important;
+}
+
+/* ---- Cart title ---- */
+.title-wrapper-with-link {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  border-bottom: 1px solid #2a0e0e !important;
+  padding-bottom: 20px !important;
+  margin-bottom: 36px !important;
+}
+.title-wrapper-with-link .title--primary {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: clamp(2.4rem, 5vw, 4.8rem) !important;
+  font-weight: 300 !important;
+  font-style: italic !important;
+  color: #ffffff !important;
+  letter-spacing: 0.06em !important;
+  margin: 0 !important;
+}
+.title-wrapper-with-link .underlined-link {
+  color: rgba(255,255,255,0.45) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid rgba(255,255,255,0.2) !important;
+  padding-bottom: 2px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+.title-wrapper-with-link .underlined-link:hover {
+  color: #c9a84c !important;
+  border-color: #c9a84c !important;
+}
+
+/* ---- Table header ---- */
+.cart-items thead tr {
+  border-bottom: 1px solid #2a0e0e !important;
+}
+.cart-items th.caption-with-letter-spacing {
+  color: rgba(255,255,255,0.35) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.62rem !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  padding-bottom: 14px !important;
+}
+
+/* ---- Cart rows ---- */
+.cart-item {
+  border-bottom: 1px solid #1a0707 !important;
+}
+
+/* ---- Product image container ---- */
+.cart-item__image-container.gradient {
+  background: #110505 !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  border: 1px solid #2a0e0e !important;
+}
+
+/* ---- Product name ---- */
+a.cart-item__name.h4.break {
+  color: #ffffff !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 1.2rem !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  text-decoration: none !important;
+  letter-spacing: 0.03em !important;
+}
+a.cart-item__name.h4.break:hover {
+  color: #c9a84c !important;
+}
+
+/* ---- Item details / options ---- */
+.cart-item__details .product-option,
+.cart-item__details .product-option dt,
+.cart-item__details .product-option dd {
+  color: rgba(255,255,255,0.4) !important;
+  font-size: 0.76rem !important;
+}
+.cart-item__details .caption-with-letter-spacing {
+  color: rgba(255,255,255,0.3) !important;
+  font-size: 0.62rem !important;
+}
+
+/* ---- Prices ---- */
+.cart-item__price-wrapper .price.price--end,
+.cart-item__totals .price.price--end {
+  color: #ffffff !important;
+}
+s.cart-item__old-price.price.price--end {
+  color: rgba(255,255,255,0.3) !important;
+}
+dd.price.price--end,
+.cart-item__discounted-prices dd.price.price--end {
+  color: #c9a84c !important;
+}
+
+/* ---- Quantity ---- */
+.cart-quantity .quantity__input {
+  background: #1a0505 !important;
+  border-color: #2a0e0e !important;
+  color: #ffffff !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.cart-quantity .quantity__button {
+  background: transparent !important;
+  border-color: #2a0e0e !important;
+  color: rgba(255,255,255,0.6) !important;
+}
+.cart-quantity .quantity__button:hover,
+.cart-quantity .quantity__button:focus {
+  background: #2a0e0e !important;
+  color: #ffffff !important;
+}
+
+/* ---- Remove button ---- */
+cart-remove-button a.button.button--tertiary {
+  color: rgba(255,255,255,0.25) !important;
+  background: transparent !important;
+  border: none !important;
+}
+cart-remove-button a.button.button--tertiary:hover {
+  color: #8b0000 !important;
+}
+
+/* ---- Line item discounts ---- */
+.cart-item__details .discounts__discount {
+  color: #c9a84c !important;
+  font-size: 0.75rem !important;
+}
+
+/* ---- Empty cart state ---- */
+.cart__warnings .cart__empty-text {
+  font-family: 'Cormorant Garamond', serif !important;
+  color: rgba(255,255,255,0.55) !important;
+  font-style: italic !important;
+  font-weight: 300 !important;
+}
+.cart__warnings .button {
+  background: #8b0000 !important;
+  color: #ffffff !important;
+  border: none !important;
+  letter-spacing: 0.12em !important;
+}
+.cart__login-title,
+.cart__login-paragraph,
+.cart__login-paragraph a {
+  color: rgba(255,255,255,0.55) !important;
+}
+
+/* ============================================================
+   CART FOOTER — Totals, Progress, Checkout
+   ============================================================ */
+.cart__footer {
+  border-top: 1px solid #2a0e0e !important;
+}
+
+/* Free shipping progress bar */
+.lv-cart-shipping-progress {
+  margin-bottom: 28px !important;
+  padding: 14px 18px !important;
+  background: #110505 !important;
+  border: 1px solid #2a0e0e !important;
+  border-radius: 3px !important;
+}
+.lv-cart-shipping-text {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.08em !important;
+  color: rgba(255,255,255,0.6) !important;
+  text-align: center !important;
+  margin-bottom: 10px !important;
+}
+.lv-cart-shipping-text em {
+  color: #c9a84c !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+}
+.lv-cart-shipping-track {
+  height: 2px !important;
+  background: #2a0e0e !important;
+  border-radius: 2px !important;
+  overflow: hidden !important;
+}
+.lv-cart-shipping-fill {
+  height: 100% !important;
+  background: linear-gradient(90deg, #8b0000, #c9a84c) !important;
+  border-radius: 2px !important;
+  transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* Upsell block */
+.lv-cart-upsell {
+  margin-bottom: 24px !important;
+  padding: 16px !important;
+  background: #110505 !important;
+  border: 1px solid #2a0e0e !important;
+  border-radius: 3px !important;
+  display: flex !important;
+  gap: 14px !important;
+  align-items: center !important;
+}
+.lv-cart-upsell__label {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.35) !important;
+  margin-bottom: 4px !important;
+}
+.lv-cart-upsell__img {
+  width: 68px !important;
+  height: 68px !important;
+  object-fit: cover !important;
+  border-radius: 3px !important;
+  flex-shrink: 0 !important;
+  background: #1a0505 !important;
+  display: block !important;
+}
+.lv-cart-upsell__info {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+.lv-cart-upsell__title {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 1.05rem !important;
+  font-style: italic !important;
+  color: #ffffff !important;
+  margin-bottom: 2px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.lv-cart-upsell__price {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.82rem !important;
+  color: #c9a84c !important;
+  margin-bottom: 10px !important;
+}
+.lv-cart-upsell__btn {
+  background: transparent !important;
+  border: 1px solid rgba(139,0,0,0.7) !important;
+  color: #ffffff !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.62rem !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  padding: 7px 14px !important;
+  border-radius: 0 !important;
+  cursor: pointer !important;
+  transition: background 0.2s !important;
+  white-space: nowrap !important;
+}
+.lv-cart-upsell__btn:hover {
+  background: #8b0000 !important;
+  border-color: #8b0000 !important;
+}
+
+/* Subtotal / Totals */
+.totals {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  gap: 12px !important;
+  margin-bottom: 6px !important;
+}
+.totals__total {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.68rem !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.45) !important;
+  font-weight: 400 !important;
+}
+.totals__total-value {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 2.4rem !important;
+  font-style: italic !important;
+  color: #c9a84c !important;
+  letter-spacing: 0.04em !important;
+  line-height: 1 !important;
+}
+
+.tax-note.caption-large.rte {
+  color: rgba(255,255,255,0.3) !important;
+  font-size: 0.68rem !important;
+  margin-bottom: 24px !important;
+  display: block !important;
+  letter-spacing: 0.05em !important;
+}
+.tax-note.caption-large.rte a {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+/* Cart-level discounts */
+.discounts__discount--position {
+  color: #c9a84c !important;
+}
+
+/* Cart note */
+.cart__note .text-area.field__input {
+  background: #1a0505 !important;
+  border-color: #2a0e0e !important;
+  color: #ffffff !important;
+  border-radius: 2px !important;
+}
+.cart__note label {
+  color: rgba(255,255,255,0.5) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Checkout button */
+.cart__checkout-button.button {
+  background: #8b0000 !important;
+  color: #ffffff !important;
+  border: none !important;
+  width: 100% !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  padding: 20px 24px !important;
+  border-radius: 0 !important;
+  cursor: pointer !important;
+  transition: background 0.25s !important;
+  margin-bottom: 12px !important;
+}
+.cart__checkout-button.button:hover:not([disabled]) {
+  background: #a00000 !important;
+}
+.cart__checkout-button.button[disabled] {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+/* Dynamic checkout (Shop Pay etc.) */
+.cart__dynamic-checkout-buttons.additional-checkout-buttons {
+  margin-top: 0 !important;
+}
+.shopify-payment-button__button {
+  border-radius: 0 !important;
+}
