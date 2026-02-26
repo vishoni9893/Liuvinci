@@ -595,18 +595,18 @@
 }
 /* Liu Vinci - card typography */
 .card__heading a {
-  font-size: 1rem !important;
+  font-size: 1.5rem !important;
   font-family: 'Cormorant Garamond', Georgia, serif !important;
   color: #f5eeea !important;
 }
 
 .price .price-item {
-  font-size: 1rem !important;
-  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: 1.4rem !important;
+  font-family: 'Inter', sans-serif !important;
   color: #f5eeea !important;
 }
 
 .price .price-item--regular {
-  color: rgba(245,238,234,0.5) !important;
-  font-size: 0.85rem !important;
+  color: rgba(245,238,234,0.8) !important;
+  font-size: 1.3rem !important;
 }

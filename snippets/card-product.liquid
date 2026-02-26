@@ -124,21 +124,22 @@
                 {{ card_product.title | escape }}
               </a>
             </h3>
-          </div>
+        </div>
           <div class="card__badge {{ settings.badge_position }}">
-            {%- if card_product.available == false -%}
+            {%- if card_product.compare_at_price > card_product.price and card_product.available -%}
+              {%- assign discount = card_product.compare_at_price | minus: card_product.price | times: 100 | divided_by: card_product.compare_at_price | round -%}
+              <span
+                id="NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
+                class="lv-discount-badge-img"
+              >
+                {{ discount }}% Off
+              </span>
+            {%- elsif card_product.available == false -%}
               <span
                 id="NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
                 class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
               >
                 {{- 'products.product.sold_out' | t -}}
-              </span>
-            {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
-              <span
-                id="NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
-                class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
-              >
-                {{- 'products.product.on_sale' | t -}}
               </span>
             {%- endif -%}
           </div>
@@ -169,6 +170,11 @@
 
             <span class="caption-large light">{{ block.settings.description | escape }}</span>
 
+<!-- Start of Judge.me code -->
+  <div class='jdgm-widget jdgm-preview-badge'>
+    {{ card_product.metafields.judgeme.badge }}
+  </div>
+<!-- End of Judge.me code -->
             {%- if show_rating and card_product.metafields.reviews.rating.value != blank -%}
               {% liquid
                 assign rating_decimal = 0
@@ -530,6 +536,10 @@
                             {{ card_product.title | escape }}
                           </h3>
                         </a>
+                        {%- if card_product.compare_at_price > card_product.price -%}
+                          {%- assign discount = card_product.compare_at_price | minus: card_product.price | times: 100 | divided_by: card_product.compare_at_price | round -%}
+                          <div class="lv-discount-badge">{{ discount }}% Off</div>
+                        {%- endif -%}
                         {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
                         {%- if card_product.quantity_price_breaks_configured? -%}
                           <div class="card__information-volume-pricing-note">
