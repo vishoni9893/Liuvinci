@@ -42,6 +42,57 @@
           {%- case block.type -%}
             {%- when '@app' -%}
               {% render block %}
+
+            {%- when 'free_shipping' -%}
+              {%- if section.settings.free_shipping_threshold > 0 -%}
+                {%- assign threshold_cents = section.settings.free_shipping_threshold | times: 100 -%}
+                {%- assign remaining_cents = threshold_cents | minus: cart.total_price -%}
+                {%- assign progress_pct = cart.total_price | times: 100 | divided_by: threshold_cents -%}
+                {%- if progress_pct > 100 -%}{%- assign progress_pct = 100 -%}{%- endif -%}
+                <div class="lv-cart-shipping-progress" {{ block.shopify_attributes }}>
+                  <p class="lv-cart-shipping-text">
+                    {%- if remaining_cents <= 0 -%}
+                      You've unlocked <em>Free Shipping</em> ✦
+                    {%- else -%}
+                      Add <em>{{ remaining_cents | money_without_trailing_zeros }}</em> more for free shipping
+                    {%- endif -%}
+                  </p>
+                  <div class="lv-cart-shipping-track">
+                    <div class="lv-cart-shipping-fill" style="width:{{ progress_pct }}%"></div>
+                  </div>
+                </div>
+              {%- endif -%}
+
+            {%- when 'upsell' -%}
+              {%- if block.settings.upsell_product != blank -%}
+                {%- assign up = block.settings.upsell_product -%}
+                {%- assign up_variant = up.selected_or_first_available_variant -%}
+                {%- if up_variant.available -%}
+                  <div class="lv-cart-upsell" {{ block.shopify_attributes }}>
+                    {%- if up.featured_image -%}
+                      <img
+                        class="lv-cart-upsell__img"
+                        src="{{ up.featured_image | image_url: width: 140 }}"
+                        alt="{{ up.featured_image.alt | escape }}"
+                        width="68"
+                        height="68"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                    <div class="lv-cart-upsell__info">
+                      <p class="lv-cart-upsell__label">You might also like</p>
+                      <p class="lv-cart-upsell__title">{{ up.title | escape }}</p>
+                      <p class="lv-cart-upsell__price">{{ up_variant.price | money_without_trailing_zeros }}</p>
+                      <form action="{{ routes.cart_add_url }}" method="post">
+                        <input type="hidden" name="id" value="{{ up_variant.id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="lv-cart-upsell__btn">+ Add to Cart</button>
+                      </form>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+
             {%- when 'subtotal' -%}
               <div class="js-contents" {{ block.shopify_attributes }}>
                 <div>
@@ -51,7 +102,7 @@
                         <li class="discounts__discount discounts__discount--position">
                           {{- 'icon-discount.svg' | inline_asset_content -}}
                           {{ discount.title | escape }}
-                          (-{{ discount.total_allocated_amount | money }})
+                          (-{{ discount.total_allocated_amount | money_without_trailing_zeros }})
                         </li>
                       {%- endfor -%}
                     </ul>
@@ -60,7 +111,7 @@
 
                 <div class="totals">
                   <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+                  <p class="totals__total-value">{{ cart.total_price | money_without_trailing_zeros }}</p>
                 </div>
 
                 <small class="tax-note caption-large rte">
@@ -103,6 +154,7 @@
                   {%- endif -%}
                 </small>
               </div>
+
             {%- else -%}
               <div class="cart__ctas" {{ block.shopify_attributes }}>
                 <button
@@ -146,8 +198,19 @@
     },
     {
       "type": "header",
+      "content": "Free Shipping Bar"
+    },
+    {
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free shipping threshold (₹)",
+      "default": 999,
+      "info": "Set to 0 to disable the progress bar"
+    },
+    {
+      "type": "header",
       "content": "t:sections.all.padding.section_padding_heading"
-    },    
+    },
     {
       "type": "range",
       "id": "padding_top",
@@ -170,6 +233,23 @@
     }
   ],
   "blocks": [
+    {
+      "type": "free_shipping",
+      "name": "Free Shipping Bar",
+      "limit": 1
+    },
+    {
+      "type": "upsell",
+      "name": "Upsell Product",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "product",
+          "id": "upsell_product",
+          "label": "Upsell product"
+        }
+      ]
+    },
     {
       "type": "subtotal",
       "name": "t:sections.main-cart-footer.blocks.subtotal.name",

@@ -140,7 +140,7 @@
                 <div class="product__title" {{ block.shopify_attributes }}>
                   <p class="lv-product-vendor">{{ product.vendor }}</p>
                   <h1>{{ product.title | escape }}</h1>
-                  <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+                  <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-auto-install="true"></div>
                 </div>
 
               {%- when 'price' -%}
@@ -222,7 +222,7 @@
                   {% if product.metafields.custom.subtitle != blank %}
                     <p class="lv-product-subtitle">{{ product.metafields.custom.subtitle }}</p>
                   {% endif %}
-                  <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+                  <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-auto-install="true"></div>
 
                 {%- when 'price' -%}
                   <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
@@ -671,6 +671,44 @@
 
     <script type="application/ld+json">{{ product | structured_data }}</script>
 
+    <!-- ═══════════════════════════════════════
+         JUDGE.ME BADGE REINIT — force populate
+         if badge is still 0 after their script runs
+    ═══════════════════════════════════════ -->
+    <script>
+    (function() {
+      function lvJdgmReinit() {
+        var badges = document.querySelectorAll('.jdgm-preview-badge[data-number-of-reviews="0"]');
+        if (!badges.length) return;
+        // Try Judge.me's own init if available
+        if (window.jdgm) {
+          if (typeof window.jdgm.on_install === 'function') {
+            try { window.jdgm.on_install(); } catch(e) {}
+          }
+          if (window.jdgm.customReviewWidget && typeof window.jdgm.customReviewWidget.initRelatedProducts === 'function') {
+            try { window.jdgm.customReviewWidget.initRelatedProducts(); } catch(e) {}
+          }
+          // Re-init individual badges
+          badges.forEach(function(el) {
+            if (typeof window.jdgm.on_install === 'function') {
+              try { window.jdgm.on_install(el); } catch(e) {}
+            }
+          });
+        }
+      }
+      // Run after page load, then again after 1.5s for lazy-loaded scripts
+      if (document.readyState === 'complete') {
+        lvJdgmReinit();
+        setTimeout(lvJdgmReinit, 1500);
+      } else {
+        window.addEventListener('load', function() {
+          lvJdgmReinit();
+          setTimeout(lvJdgmReinit, 1500);
+        });
+      }
+    })();
+    </script>
+
   </div>
 </product-info>
 
@@ -870,7 +908,7 @@
     { "type": "text", "id": "sticky_bar_text", "label": "Sticky bar strip text", "default": "🎉 Extra 5% off on prepaid orders" },
     { "type": "header", "content": "Product Videos" },
     { "type": "checkbox", "id": "show_video", "label": "Show video slider", "default": false },
-    { "type": "inline_richtext", "id": "product_video_heading", "label": "Video section heading", "default": "See it in action" },
+    { "type": "inline_richtext", "id": "product_video_heading", "label": "Video section heading", "default": "Witness the Ritual" },
     { "type": "header", "content": "t:sections.all.padding.section_padding_heading" },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 36 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 36 }
