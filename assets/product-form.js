@@ -84,6 +84,7 @@ if (!customElements.get('product-form')) {
                   setTimeout(() => {
                     CartPerformance.measure("add:paint-updated-sections", () => {
                       this.cart.renderContents(response);
+                      setTimeout(() => { if (this.cart.open) this.cart.open(); }, 100);
                     });
                   });
                 },
@@ -93,6 +94,7 @@ if (!customElements.get('product-form')) {
             } else {
               CartPerformance.measure("add:paint-updated-sections", () => {
                 this.cart.renderContents(response);
+                setTimeout(() => { if (this.cart.open) this.cart.open(); }, 100);
               });
             }
           })

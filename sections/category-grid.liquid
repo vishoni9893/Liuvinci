@@ -14,7 +14,9 @@
               {{
                 block.settings.image
                 | image_url: width: 600
-                | image_tag: class: 'lv-slide-img', alt: block.settings.label
+                | image_tag: class: 'lv-slide-img',
+                             alt: block.settings.label,
+                             loading: 'lazy'
               }}
             {% endif %}
           </a>
@@ -89,7 +91,7 @@
 {% endschema %}
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap');
+/* Cormorant Garamond and Inter loaded globally via theme.liquid */
 
 .lv-categories {
   background: #0a0000;
@@ -265,7 +267,11 @@
     if (Math.abs(diff) > 50) lvSlide(diff > 0 ? 1 : -1);
   });
 
-  window.addEventListener('resize', () => { buildDots(); goTo(0); });
+  let lvCatResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(lvCatResizeTimer);
+    lvCatResizeTimer = setTimeout(() => { buildDots(); goTo(0); }, 200);
+  });
 
   buildDots();
   startAutoplay();

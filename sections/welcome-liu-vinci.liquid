@@ -3,7 +3,11 @@
 
     {% if section.settings.brand_image != blank %}
       <div class="lv-welcome__brand-image">
-        <img src="{{ section.settings.brand_image | image_url: width: 500 }}" alt="Liu Vinci">
+        {{
+        section.settings.brand_image
+        | image_url: width: 500
+        | image_tag: alt: 'Liu Vinci', loading: 'lazy', width: 500
+      }}
       </div>
     {% endif %}
 
@@ -177,7 +181,7 @@
 {% endschema %}
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+/* Cormorant Garamond and Inter loaded globally via theme.liquid */
 
 .lv-welcome {
   padding: {{ section.settings.padding_top }}px 40px {{ section.settings.padding_bottom }}px;

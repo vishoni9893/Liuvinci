@@ -1,0 +1,80 @@
+{%- if cart.item_count == 0 -%}
+  <div class="drawer__inner-empty">
+    <p class="cart__empty-text">Your cart is empty</p>
+    <a href="{{ routes.all_products_collection_url }}" class="button">Continue shopping</a>
+  </div>
+{%- else -%}
+  {%- for item in cart.items -%}
+    <div id="CartDrawer-Item-{{ forloop.index }}" class="cart-item">
+
+      <div class="cart-item__image-container">
+        <a href="{{ item.url }}">
+          <img src="{{ item.image | image_url: width: 160 }}"
+               alt="{{ item.image.alt | escape }}"
+               width="80" height="80"
+               loading="lazy">
+        </a>
+      </div>
+
+      <div class="cart-item__details">
+        <a href="{{ item.url }}" class="cart-item__name">{{ item.product_title }}</a>
+        {%- if item.variant.title != 'Default Title' -%}
+          <p class="cart-item__variant" style="color:rgba(255,255,255,0.5);font-size:1.1rem;margin:0;">{{ item.variant.title }}</p>
+        {%- endif -%}
+        <div class="cart-item__price-wrapper">
+          {%- if item.original_price > item.final_price -%}
+            <span class="price-item price-item--regular" style="text-decoration:line-through;color:rgba(255,255,255,0.4);font-size:1.1rem;">
+              {{ item.original_price | money_without_trailing_zeros }}
+            </span>
+          {%- endif -%}
+          <span class="price-item price-item--sale" style="color:#ffffff;font-weight:600;">
+            {{ item.final_price | money_without_trailing_zeros }}
+          </span>
+          {%- if item.original_price > item.final_price -%}
+            {%- assign discount_pct = item.original_price | minus: item.final_price | times: 100 | divided_by: item.original_price -%}
+            <span style="background:#1a4a1a;color:#4caf50;font-size:1rem;padding:2px 6px;border-radius:3px;">{{ discount_pct }}% OFF</span>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="cart-item__quantity-wrapper">
+        <cart-remove-button id="CartDrawer-Remove-{{ forloop.index }}" data-index="{{ forloop.index }}">
+          <button class="cart-remove-button" type="button" aria-label="Remove {{ item.title }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 17" width="16" height="16">
+              <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.706-.707l-7.574-7.276 7.418-7.418a.5.5 0 10-.707-.707L8.994 8.017 1.413.43a.5.5 0 10-.707.707L8.28 8.723l-7.415 7.255z"/>
+            </svg>
+          </button>
+        </cart-remove-button>
+
+        <div class="quantity">
+          <button class="quantity__button" type="button"
+                  name="minus"
+                  aria-label="Decrease quantity"
+                  data-index="{{ forloop.index }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" viewBox="0 0 10 2" fill="white">
+              <path d="M0 1h10" stroke="white" stroke-width="1.5"/>
+            </svg>
+          </button>
+          <input class="quantity__input"
+                 id="Drawer-quantity-{{ forloop.index }}"
+                 data-index="{{ forloop.index }}"
+                 type="number"
+                 value="{{ item.quantity }}"
+                 min="0"
+                 aria-label="Quantity for {{ item.title }}"
+                 name="updates[]">
+          <button class="quantity__button" type="button"
+                  name="plus"
+                  aria-label="Increase quantity"
+                  data-index="{{ forloop.index }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="white">
+              <path d="M5 0v10M0 5h10" stroke="white" stroke-width="1.5"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  {%- endfor -%}
+{%- endif -%}

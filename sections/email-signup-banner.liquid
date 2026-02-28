@@ -1,7 +1,11 @@
-{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
-{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
-{{ 'newsletter-section.css' | asset_url | stylesheet_tag }}
-{{ 'section-email-signup-banner.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'section-image-banner.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ 'section-image-banner.css' | asset_url }}"></noscript>
+<link rel="stylesheet" href="{{ 'component-newsletter.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ 'component-newsletter.css' | asset_url }}"></noscript>
+<link rel="stylesheet" href="{{ 'newsletter-section.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ 'newsletter-section.css' | asset_url }}"></noscript>
+<link rel="stylesheet" href="{{ 'section-email-signup-banner.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ 'section-email-signup-banner.css' | asset_url }}"></noscript>
 
 {%- style -%}
   #Banner-{{ section.id }}::after {

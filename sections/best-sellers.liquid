@@ -22,7 +22,11 @@
                     {{
                       product.featured_image
                       | image_url: width: 600
-                      | image_tag: class: 'lv-best__img', alt: product.title
+                      | image_tag: class: 'lv-best__img',
+                                   alt: product.title,
+                                   loading: 'lazy',
+                                   width: 600,
+                                   height: 800
                     }}
                   {% endif %}
                 </div>
@@ -108,7 +112,7 @@
 {% endschema %}
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap');
+/* Cormorant Garamond and Inter loaded globally via theme.liquid */
 
 .lv-best {
   background: #0a0000;
@@ -395,27 +399,11 @@
     }
   });
 
-  window.addEventListener('resize', () => { buildDots(); goTo(0); });
-
-  window.lvAddToCart = function(e, variantId) {
-    e.preventDefault();
-    const btn = e.target;
-    btn.textContent = 'Adding...';
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: variantId, quantity: 1 })
-    })
-    .then(r => r.json())
-    .then(() => {
-      btn.textContent = 'Added!';
-      setTimeout(() => btn.textContent = 'Add to Cart', 2000);
-    })
-    .catch(() => {
-      btn.textContent = 'Error';
-      setTimeout(() => btn.textContent = 'Add to Cart', 2000);
-    });
-  }
+  let lvBestResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(lvBestResizeTimer);
+    lvBestResizeTimer = setTimeout(() => { buildDots(); goTo(0); }, 200);
+  });
 
   buildDots();
   startAutoplay();

@@ -4,7 +4,9 @@
       {{
         section.settings.hero_image_desktop
         | image_url: width: 1440
-        | image_tag: class: 'lv-hero__img', alt: 'Liu Vinci Hero'
+        | image_tag: class: 'lv-hero__img', alt: 'Liu Vinci Hero',
+                     fetchpriority: 'high',
+                     loading: 'eager'
       }}
     </span>
   {% endif %}
@@ -13,8 +15,10 @@
     <span class="lv-hero__mobile">
       {{
         section.settings.hero_image_mobile
-        | image_url: width: 732
-        | image_tag: class: 'lv-hero__img', alt: 'Liu Vinci Hero'
+        | image_url: width: 750
+        | image_tag: class: 'lv-hero__img', alt: 'Liu Vinci Hero',
+                     fetchpriority: 'high',
+                     loading: 'eager'
       }}
     </span>
   {% endif %}

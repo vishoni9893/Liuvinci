@@ -15,6 +15,11 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@400;600;700&display=swap"></noscript>
+
     <title>
       {{ page_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
@@ -254,7 +259,6 @@
         font-family: var(--font-body-family);
         font-style: var(--font-body-style);
         font-weight: var(--font-body-weight);
-        
       }
 
       @media screen and (min-width: 750px) {
@@ -266,14 +270,6 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
-
-    {%- if settings.cart_type == 'drawer' -%}
-      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
-      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
-      {{ 'component-price.css' | asset_url | stylesheet_tag }}
-      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
-    {%- endif -%}
 
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
@@ -305,7 +301,7 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
-    
+
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
@@ -313,9 +309,9 @@
       {{ 'accessibility.skip_to_text' | t }}
     </a>
     <div class="lv-bg-queen" aria-hidden="true">
-      <img src="https://cdn.shopify.com/s/files/1/0815/4877/1540/files/Li-1440-x-732-px-2.png?v=1771492955" alt="">
+      <img src="https://cdn.shopify.com/s/files/1/0815/4877/1540/files/Li-1440-x-732-px-2.png?v=1771492955" alt="" loading="lazy" width="1440" height="732">
     </div>
-   
+
     {%- if settings.cart_type == 'drawer' -%}
       {%- render 'cart-drawer' -%}
     {%- endif -%}
@@ -385,18 +381,48 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
     <script>
-  // Header turns red on scroll
-  window.addEventListener('scroll', function() {
-    const header = document.querySelector('.header-wrapper');
-    if (!header) return;
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  });
-</script>
-<div id="lv-bg-illustration" style="display:none; position:fixed; top:0; right:0; width:300px; height:100vh; background-image:url('YOUR_IMAGE_URL_HERE'); background-size:contain; background-repeat:repeat-y; background-position:top right; opacity:0.07; pointer-events:none; z-index:0;"></div>
+      // ── Header turns red on scroll ──
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header-wrapper');
+        if (!header) return;
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }, { passive: true });
+
+      // ── Sticky ATC bar: show after main ATC scrolls out of view ──
+      (function() {
+        var stickyBar = document.getElementById('lv-sticky-atc');
+        if (!stickyBar) return;
+
+        var mainBtn = document.querySelector('.product-form__submit, button[name="add"]');
+        if (!mainBtn) {
+          window.addEventListener('scroll', function() {
+            stickyBar.classList.toggle('is-visible', window.scrollY > 300);
+          }, { passive: true });
+          return;
+        }
+
+        var atcObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              stickyBar.classList.remove('is-visible');
+            } else if (window.scrollY > 100) {
+              stickyBar.classList.add('is-visible');
+            }
+          });
+        }, { threshold: 0.1 });
+
+        atcObserver.observe(mainBtn);
+      })();
+    </script>
+
+    <link rel="stylesheet" href="{{ 'component-cart-drawer-lv.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'component-cart-drawer-lv.css' | asset_url }}"></noscript>
+
   </body>
 </html>

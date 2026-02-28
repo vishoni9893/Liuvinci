@@ -7,21 +7,32 @@
   data-url="{{ product.url }}"
   {% if section.settings.image_zoom == 'hover' %}data-zoom-on-hover{% endif %}
 >
-  {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
-  {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
-  {{ 'component-price.css' | asset_url | stylesheet_tag }}
-  {{ 'component-slider.css' | asset_url | stylesheet_tag }}
-  {{ 'component-rating.css' | asset_url | stylesheet_tag }}
-  {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
-  {{ 'video-section.css' | asset_url | stylesheet_tag }}
+  <link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}"></noscript>
+  <link rel="stylesheet" href="{{ 'component-accordion.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'component-accordion.css' | asset_url }}"></noscript>
+  <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}"></noscript>
+  <link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}"></noscript>
+  <link rel="stylesheet" href="{{ 'component-rating.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'component-rating.css' | asset_url }}"></noscript>
+  <link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'component-deferred-media.css' | asset_url }}"></noscript>
+  <link rel="stylesheet" href="{{ 'video-section.css' | asset_url }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ 'video-section.css' | asset_url }}"></noscript>
 
   {% unless product.has_only_default_variant %}
-    {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
-    {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
-    {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
+    <link rel="stylesheet" href="{{ 'component-product-variant-picker.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'component-product-variant-picker.css' | asset_url }}"></noscript>
+    <link rel="stylesheet" href="{{ 'component-swatch-input.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'component-swatch-input.css' | asset_url }}"></noscript>
+    <link rel="stylesheet" href="{{ 'component-swatch.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'component-swatch.css' | asset_url }}"></noscript>
   {% endunless %}
   {%- if product.quantity_price_breaks_configured? -%}
-    {{ 'component-volume-pricing.css' | asset_url | stylesheet_tag }}
+    <link rel="stylesheet" href="{{ 'component-volume-pricing.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'component-volume-pricing.css' | asset_url }}"></noscript>
   {%- endif -%}
 
   {%- style -%}
@@ -52,7 +63,8 @@
 
   {%- assign first_3d_model = product.media | where: 'media_type', 'model' | first -%}
   {%- if first_3d_model -%}
-    {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
+    <link rel="stylesheet" href="{{ 'component-product-model.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'component-product-model.css' | asset_url }}"></noscript>
     <link id="ModelViewerStyle" rel="stylesheet" href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css" media="print" onload="this.media='all'">
     <link id="ModelViewerOverride" rel="stylesheet" href="{{ 'component-model-viewer-ui.css' | asset_url }}" media="print" onload="this.media='all'">
   {%- endif -%}
@@ -74,9 +86,22 @@
   <div class="lv-sticky-atc" id="lv-sticky-atc">
     <div class="lv-sticky-atc__strip">{{ section.settings.sticky_bar_text }}</div>
     <div class="lv-sticky-atc__bar">
-      <button class="lv-sticky-atc__btn" id="lv-sticky-btn" {% if lv_variant.available == false %}disabled{% endif %}>
-        {% if lv_variant.available %}ADD TO CART &nbsp;—&nbsp; {{ lv_variant.price | money_without_trailing_zeros }}{% else %}SOLD OUT{% endif %}
-      </button>
+     <button class="lv-sticky-atc__btn" id="lv-sticky-btn" {% if lv_variant.available == false %}disabled{% endif %}>
+  {% if lv_variant.available %}ADD TO CART &nbsp;—&nbsp; {{ lv_variant.price | money_without_trailing_zeros }}{% else %}SOLD OUT{% endif %}
+</button>
+
+<script>
+document.getElementById('lv-sticky-btn').addEventListener('click', function() {
+  var form = document.getElementById('product-form-{{ section.id }}');
+  var formData = new FormData(form);
+  fetch('/cart/add.js', { method: 'POST', body: formData })
+    .then(r => r.json())
+    .then(() => {
+      var drawer = document.querySelector('cart-drawer');
+      if (drawer) drawer.open();
+    });
+});
+</script>
     </div>
   </div>
 
@@ -382,6 +407,7 @@
                         <span class="divider">{{- 'products.product.quantity.maximum_of' | t: quantity: product.selected_or_first_available_variant.quantity_rule.max -}}</span>
                       {%- endif -%}
                     </div>
+                    <div class="quantity__rules-cart" hidden></div>
                   </div>
 
                 {%- when 'buy_buttons' -%}
@@ -424,8 +450,10 @@
                     data-product-id="{{ product.id }}"
                     {{ block.shopify_attributes }}
                   >
-                    {{ 'component-card.css' | asset_url | stylesheet_tag }}
-                    {{ 'component-complementary-products.css' | asset_url | stylesheet_tag }}
+                    <link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'">
+                    <noscript><link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}"></noscript>
+                    <link rel="stylesheet" href="{{ 'component-complementary-products.css' | asset_url }}" media="print" onload="this.media='all'">
+                    <noscript><link rel="stylesheet" href="{{ 'component-complementary-products.css' | asset_url }}"></noscript>
                   </product-recommendations>
 
               {%- endcase -%}
@@ -711,6 +739,7 @@
 
   </div>
 </product-info>
+
 
 {% schema %}
 {
